@@ -1,5 +1,7 @@
 # flyers
 
+> A flyers prototype app.
+
 ## Getting Started
 
 Start in development mode
