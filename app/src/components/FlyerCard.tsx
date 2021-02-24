@@ -24,9 +24,14 @@ const useStyles = makeStyles({
 export type FlyerCardProps = {
   value: Flyer,
   favorite?: boolean,
+  onFavouriteClick?: (value: Flyer, favorite: boolean) => void,
 }
 
-const FlyerCard: React.FC<FlyerCardProps> = ({ value, favorite }) => {
+const FlyerCard: React.FC<FlyerCardProps> = ({
+   value,
+   favorite= false,
+   onFavouriteClick,
+ }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -51,6 +56,7 @@ const FlyerCard: React.FC<FlyerCardProps> = ({ value, favorite }) => {
       <CardActions>
         <IconButton
           color={favorite ? 'primary' : 'default'}
+          onClick={() => onFavouriteClick?.(value, favorite)}
         >
           <FavoriteIcon />
         </IconButton>

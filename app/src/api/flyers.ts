@@ -1,4 +1,6 @@
 import { useSWRInfinite } from 'swr';
+import { SWRInfiniteResponseInterface } from 'swr/dist/use-swr-infinite';
+import { fetcher } from './fetcher';
 
 export type Flyer = {
   id: number,
@@ -11,19 +13,22 @@ export type Flyer = {
 }
 
 const {
-  API_URL = '',
+  REACT_APP_API_URL = '',
 } = process.env;
 
-const getFlyersUrl = (limit: number) => (page: number) => `${API_URL}/flyers?page=${page}&limit=${limit}`
+const getFlyersUrl = (limit: number) => (page: number) => `${REACT_APP_API_URL}/flyers?page=${page + 1}&limit=${limit}`
 export type UseFlyersOptions = {
   limit?: number
 }
 const defaultUseFlyersOptions: UseFlyersOptions = {
   limit: 25,
 }
-export const useFlyers = (options = defaultUseFlyersOptions) => {
+export const useFlyers = (options = defaultUseFlyersOptions): SWRInfiniteResponseInterface<Flyer[]> => {
   const {
     limit = 25,
   } = options;
-  return useSWRInfinite<Flyer[]>(getFlyersUrl(limit))
+  return useSWRInfinite<Flyer[]>(getFlyersUrl(limit), {
+    fetcher: fetcher,
+    revalidateOnMount: true,
+  })
 }
